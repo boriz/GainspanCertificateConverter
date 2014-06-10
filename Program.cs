@@ -9,9 +9,13 @@ class Program
     static void Main(string[] args)
     {
         // Convert binary to gainspan hex
-        Console.WriteLine("Converts binary or Base64-encoded file to colon-separated hex format");
+        Console.WriteLine("You can import binary (der) certificates to Gainspan without conversion");
+        Console.WriteLine("Gainspan also has an option to import certificate in HEX (ASCII-only) format");
+        Console.WriteLine("Use this tool if there is no binary connection to Gainspan");
+        Console.WriteLine();
+        Console.WriteLine("This tool converts binary (or Base64-encoded) file to hex format (with no separators between bytes!)");
         Console.WriteLine("Use it to convert EAP certificates to ASCII format to import it to Gainspan");
-            
+                    
         if (args.Length != 2)
         {
             Console.WriteLine("Usage: bin2hex.exe <input file> <output file>");
@@ -21,7 +25,7 @@ class Program
         string strSrc = args[0];
         string strDst = args[1];
 
-        if (File.Exists(strSrc))
+        if (!File.Exists(strSrc))
         {
             Console.WriteLine("Input file does not exist");
             return;
@@ -37,7 +41,8 @@ class Program
             {
                 // Apaprently we got avalid base64 string
                 Console.WriteLine("..Ok");
-                string strDataBase64 = BitConverter.ToString(byDataBase54).Replace("-", ":");
+                //string strDataBase64 = BitConverter.ToString(byDataBase54).Replace("-", ":");
+                string strDataBase64 = BitConverter.ToString(byDataBase54).Replace("-", "");
                 File.WriteAllText(strDst, strDataBase64);
                 Console.WriteLine("Converted. Size: " + strDataBase64.Length.ToString());
 
